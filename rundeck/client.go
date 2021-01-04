@@ -9,6 +9,7 @@ package rundeck
 import (
 	"bytes"
 	"crypto/tls"
+	"encoding/json"
 	"encoding/xml"
 	"fmt"
 	"io/ioutil"
@@ -111,6 +112,7 @@ func (c *Client) rawRequest(req *request) ([]byte, error) {
 	return resBodyBytes, nil
 }
 
+
 func (c *Client) xmlRequest(method string, pathParts []string, query map[string]string, reqBody interface{}, result interface{}) error {
 
 	var err error
@@ -155,8 +157,56 @@ func (c *Client) xmlRequest(method string, pathParts []string, query map[string]
 	return nil
 }
 
+
+func (c *Client) jsonRequest(method string, pathParts []string, query map[string]string, reqBody interface{}, result interface{}) error {
+	var err error
+	var reqBodyBytes []byte
+	reqBodyBytes = nil
+	if reqBody != nil {
+		reqBodyBytes, err = xml.Marshal(reqBody)
+		if err != nil {
+			return err
+		}
+	}
+
+	req := &request{
+		Method: method,
+		PathParts: pathParts,
+		QueryArgs: query,
+		BodyBytes: reqBodyBytes,
+		Headers: map[string]string{
+			"Accept": "application/json",
+		},
+	}
+
+	if reqBody != nil {
+		req.Headers["Content-Type"] = "application/xml"
+	}
+
+	resBodyBytes, err := c.rawRequest(req)
+	if err != nil {
+		return err
+	}
+
+	if result != nil {
+		if resBodyBytes == nil {
+			return fmt.Errorf("server did not return a Json payload")
+		}
+		err = json.Unmarshal(resBodyBytes, result)
+		if err != nil {
+			return fmt.Errorf("error decoding response Json payload: %s", err.Error())
+		}
+	}
+	return nil
+}
+
 func (c *Client) get(pathParts []string, query map[string]string, result interface{}) error {
 	return c.xmlRequest("GET", pathParts, query, nil, result)
+}
+
+
+func (c *Client) getJson(pathParts []string, query map[string]string, result interface{}) error {
+	return c.jsonRequest("GET", pathParts, query, nil, result)
 }
 
 func (c *Client) rawGet(pathParts []string, query map[string]string, accept string) (string, error) {

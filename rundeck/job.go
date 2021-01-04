@@ -308,17 +308,17 @@ type JobDispatch struct {
 }
 
 type JobForecast struct {
-	Href                      string      `xml:"href"`
-	ID                        string      `xml:"id"`
-	ScheduleEnabled           bool        `xml:"scheduleEnabled"`
-	Scheduled                 bool        `xml:"scheduled"`
-	Enabled                   bool        `xml:"enabled"`
-	Permalink                 string      `xml:"permalink"`
-	Group                     interface{} `xml:"group"`
-	FutureScheduledExecutions []time.Time `xml:"futureScheduledExecutions"`
-	Description               string      `xml:"description"`
-	Project                   string      `xml:"project"`
-	Name                      string      `xml:"name"`
+	Href                      string      `json:"href"`
+	ID                        string      `json:"id"`
+	ScheduleEnabled           bool        `json:"scheduleEnabled"`
+	Scheduled                 bool        `json:"scheduled"`
+	Enabled                   bool        `json:"enabled"`
+	Permalink                 string      `json:"permalink"`
+	Group                     interface{} `json:"group"`
+	FutureScheduledExecutions []time.Time `json:"futureScheduledExecutions"`
+	Description               string      `json:"description"`
+	Project                   string      `json:"project"`
+	Name                      string      `json:"name"`
 }
 
 // GetJobSummariesForProject returns summaries of the jobs belonging to the named project.
@@ -331,7 +331,7 @@ func (c *Client) GetJobSummariesForProject(projectName string) ([]JobSummary, er
 //get job forcast to get next set of executions
 func (c *Client) GetJobForcast(id string) (*JobForecast, error)  {
 	jobForeCast := &JobForecast{}
-	err := c.get([]string{"job", id, "forecast"}, nil, &jobForeCast)
+	err := c.getJson([]string{"job", id, "forecast"}, nil, &jobForeCast)
 	if err != nil {
 		return nil, err
 	}
