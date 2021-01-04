@@ -308,17 +308,17 @@ type JobDispatch struct {
 }
 
 type JobForecast struct {
-	Href                      string      `json:"href"`
-	ID                        string      `json:"id"`
-	ScheduleEnabled           bool        `json:"scheduleEnabled"`
-	Scheduled                 bool        `json:"scheduled"`
-	Enabled                   bool        `json:"enabled"`
-	Permalink                 string      `json:"permalink"`
-	Group                     interface{} `json:"group"`
-	FutureScheduledExecutions []time.Time `json:"futureScheduledExecutions"`
-	Description               string      `json:"description"`
-	Project                   string      `json:"project"`
-	Name                      string      `json:"name"`
+	Href                      string      `xml:"href"`
+	ID                        string      `xml:"id"`
+	ScheduleEnabled           bool        `xml:"scheduleEnabled"`
+	Scheduled                 bool        `xml:"scheduled"`
+	Enabled                   bool        `xml:"enabled"`
+	Permalink                 string      `xml:"permalink"`
+	Group                     interface{} `xml:"group"`
+	FutureScheduledExecutions []time.Time `xml:"futureScheduledExecutions"`
+	Description               string      `xml:"description"`
+	Project                   string      `xml:"project"`
+	Name                      string      `xml:"name"`
 }
 
 // GetJobSummariesForProject returns summaries of the jobs belonging to the named project.
