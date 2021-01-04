@@ -57,7 +57,7 @@ func NewClient(config *ClientConfig) (*Client, error) {
 		Transport: t,
 	}
 
-	apiPath, _ := url.Parse("api/13/")
+	apiPath, _ := url.Parse("api/31/")
 	baseURL, err := url.Parse(config.BaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("invalid base URL: %s", err.Error())
