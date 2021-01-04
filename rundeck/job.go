@@ -4,6 +4,7 @@ import (
 	"encoding/xml"
 	"fmt"
 	"strings"
+	"time"
 )
 
 // JobSummary is an abbreviated description of a job that includes only its basic
@@ -306,11 +307,35 @@ type JobDispatch struct {
 	RankOrder         string   `xml:"rankOrder,omitempty"`
 }
 
+type JobForecast struct {
+	Href                      string      `json:"href"`
+	ID                        string      `json:"id"`
+	ScheduleEnabled           bool        `json:"scheduleEnabled"`
+	Scheduled                 bool        `json:"scheduled"`
+	Enabled                   bool        `json:"enabled"`
+	Permalink                 string      `json:"permalink"`
+	Group                     interface{} `json:"group"`
+	FutureScheduledExecutions []time.Time `json:"futureScheduledExecutions"`
+	Description               string      `json:"description"`
+	Project                   string      `json:"project"`
+	Name                      string      `json:"name"`
+}
+
 // GetJobSummariesForProject returns summaries of the jobs belonging to the named project.
 func (c *Client) GetJobSummariesForProject(projectName string) ([]JobSummary, error) {
 	jobList := &jobSummaryList{}
 	err := c.get([]string{"project", projectName, "jobs"}, nil, jobList)
 	return jobList.Jobs, err
+}
+
+//get job forcast to get next set of executions
+func (c *Client) GetJobForcast(id string) (*JobForecast, error)  {
+	jobForeCast := &JobForecast{}
+	err := c.get([]string{"job", id, "forecast"}, nil, &jobForeCast)
+	if err != nil {
+		return nil, err
+	}
+	return jobForeCast, nil
 }
 
 // GetJobsForProject returns the full job details of the jobs belonging to the named project.
