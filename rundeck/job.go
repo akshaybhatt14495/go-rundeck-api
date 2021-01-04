@@ -40,7 +40,7 @@ type JobDetail struct {
 	Timeout                   string              `xml:"timeout,omitempty"`
 	Retry                     string              `xml:"retry,omitempty"`
 	NodeFilter                *JobNodeFilter      `xml:"nodefilters,omitempty"`
-
+	TimeZone 		  string 	      `xml:"timeZone,omitempty"`
 	/* If Dispatch is enabled, nodesSelectedByDefault is always present with true/false.
 	 * by this reason omitempty cannot be present.
 	 * This has to be handle by the user.
