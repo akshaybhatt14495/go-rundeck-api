@@ -48,6 +48,11 @@ type request struct {
 
 // NewClient returns a configured Rundeck client.
 func NewClient(config *ClientConfig) (*Client, error) {
+	return NewClientWithVersion(config, "13")
+}
+
+// NewClient returns a configured Rundeck client.
+func NewClientWithVersion(config *ClientConfig, version string) (*Client, error) {
 	t := &http.Transport{
 		TLSClientConfig: &tls.Config{
 			InsecureSkipVerify: config.AllowUnverifiedSSL,
@@ -57,7 +62,7 @@ func NewClient(config *ClientConfig) (*Client, error) {
 		Transport: t,
 	}
 
-	apiPath, _ := url.Parse("api/31/")
+	apiPath, _ := url.Parse(fmt.Sprintf("api/%s/", version))
 	baseURL, err := url.Parse(config.BaseURL)
 	if err != nil {
 		return nil, fmt.Errorf("invalid base URL: %s", err.Error())

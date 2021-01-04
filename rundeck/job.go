@@ -329,7 +329,7 @@ func (c *Client) GetJobSummariesForProject(projectName string) ([]JobSummary, er
 }
 
 //get job forcast to get next set of executions
-func (c *Client) GetJobForcast(id string) (*JobForecast, error)  {
+func (c *Client) GetJobForcast(id string, apiVersion string) (*JobForecast, error)  {
 	jobForeCast := &JobForecast{}
 	err := c.get([]string{"job", id, "forecast"}, nil, &jobForeCast)
 	if err != nil {
